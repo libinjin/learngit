@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyLimitUp">
+
+    <insert id="batchInsert" parameterType="list">
+        INSERT INTO strategy_limit_up
+        (strategy_id,stock_code,create_time)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.strategyId},#{item.stockCode},#{item.createTime})
+        </foreach>
+    </insert>
+
+    <select id="findMax" parameterType="map" resultType="StrategyLimitUp">
+          SELECT strategy_id as strategyId,count(stock_code) as num from strategy_limit_up
+          WHERE create_time &gt;= #{start} and create_time &lt; #{end}
+          GROUP BY strategy_id
+          ORDER BY num desc LIMIT 1;
+    </select>
+
+</mapper>

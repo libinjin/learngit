@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="logPrefix" value="database.game" />
+		<setting name="mapUnderscoreToCamelCase" value="false" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias alias="Strategy" type="com.youguu.quant.strategy.pojo.Strategy" />
+		<typeAlias alias="StrategyBestStock" type="com.youguu.quant.strategy.pojo.StrategyBestStock" />
+		<typeAlias alias="StrategyComment" type="com.youguu.quant.strategy.pojo.StrategyComment" />
+		<typeAlias alias="StrategyScore" type="com.youguu.quant.strategy.pojo.StrategyScore" />
+		<typeAlias alias="StrategyUser" type="com.youguu.quant.strategy.pojo.StrategyUser" />
+		<typeAlias alias="StrategyUserRecord" type="com.youguu.quant.strategy.pojo.StrategyUserRecord" />
+		<typeAlias alias="StrategyUserStock" type="com.youguu.quant.strategy.pojo.StrategyUserStock" />
+		<typeAlias alias="UserLoop" type="com.youguu.quant.strategy.pojo.UserLoop" />
+		<typeAlias alias="UserLoopRecord" type="com.youguu.quant.strategy.pojo.UserLoopRecord" />
+		<typeAlias alias="StrategyRunLog" type="com.youguu.quant.strategy.pojo.StrategyRunLog" />
+		<typeAlias alias="StrategyStockBlacklist" type="com.youguu.quant.strategy.pojo.StrategyStockBlacklist" />
+		<typeAlias alias="StrategyProduct" type="com.youguu.quant.strategy.pojo.StrategyProduct" />
+		<typeAlias alias="StrategyStockOneProfit" type="com.youguu.quant.strategy.pojo.StrategyStockOneProfit" />
+		<typeAlias alias="StrategyStockThreeProfit" type="com.youguu.quant.strategy.pojo.StrategyStockThreeProfit" />
+		<typeAlias alias="RecommendHotStock" type="com.youguu.quant.strategy.pojo.RecommendHotStock" />
+		<typeAlias alias="QuantStkRecord" type="com.youguu.quant.strategy.pojo.QuantStkRecord" />
+		<typeAlias alias="StockTradeToday" type="com.youguu.quant.strategy.pojo.StockTradeToday" />
+		<typeAlias alias="StockTradeNear5days" type="com.youguu.quant.strategy.pojo.StockTradeNear5days" />
+		<typeAlias alias="StrategyExtend" type="com.youguu.quant.strategy.pojo.StrategyExtend" />
+		<typeAlias alias="StrategyLimitUp" type="com.youguu.quant.strategy.pojo.StrategyLimitUp" />
+	</typeAliases>
+	
+	<plugins>
+		<plugin interceptor="com.youguu.core.dao.StatementInterceptor" />
+		<plugin interceptor="com.youguu.core.dao.ResultSetInterceptor" />
+	</plugins>
+	
+	<mappers>
+		<mapper resource="mybatis/strategy/strategy_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_best_stock_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_comment_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_score_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_user_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_user_record_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_user_stock_mapper.xml" />
+		<mapper resource="mybatis/strategy/user_loop_mapper.xml" />
+		<mapper resource="mybatis/strategy/user_loop_record_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_run_log_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_stock_blacklist_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_product_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_stock_one_profit_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_stock_three_profit_mapper.xml" />
+		<mapper resource="mybatis/strategy/recommend_hot_stock_mapper.xml" />
+		<mapper resource="mybatis/strategy/quant_stk_record_mapper.xml" />
+		<mapper resource="mybatis/strategy/stock_trade_near5days_mapper.xml" />
+		<mapper resource="mybatis/strategy/stock_trade_today_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_extend_mapper.xml" />
+		<mapper resource="mybatis/strategy/strategy_limit_up_mapper.xml" />
+	</mappers>
+</configuration>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyUserRecord">
+	<resultMap type="StrategyUserRecord" id="StrategyUserRecordResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="buyTime" column="buy_time" />
+		<result property="createTime" column="create_time" />
+		<result property="payType" column="pay_type" />
+		<result property="price" column="price" />
+		<result property="day" column="day" />
+	</resultMap>
+
+	<insert id="insert" parameterType="StrategyUserRecord">
+		INSERT INTO strategy_user_record
+		(user_id,strategy_id,buy_time,create_time,pay_type,price,day)
+		VALUES
+		(#{userId},#{strategyId},#{buyTime},#{createTime},#{payType},#{price},#{day})
+	</insert>
+
+</mapper>

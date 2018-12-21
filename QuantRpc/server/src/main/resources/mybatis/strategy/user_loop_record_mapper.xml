@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserLoopRecord">
+	<resultMap type="UserLoopRecord" id="UserLoopRecordResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="stocks" column="stocks" />
+		<result property="createTime" column="create_time" />
+		<result property="type" column="type" />
+
+	</resultMap>
+
+	<insert id="insert" parameterType="UserLoopRecord">
+		INSERT INTO user_loop_record
+		(user_id,strategy_id,stocks,type,create_time)
+		VALUES
+		(#{userId},#{strategyId},#{stocks},#{type},#{createTime})
+	</insert>
+
+	<select id="findUserLoopList" parameterType="map" resultMap="UserLoopRecordResultMap">
+		select user_id,strategy_id,count(1) as num from user_loop_record  where  create_time &gt; #{startTime} and create_time &lt; #{endTime} and type=#{type} group by user_id,strategy_id
+	</select>
+
+
+
+</mapper>

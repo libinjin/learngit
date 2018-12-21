@@ -1,0 +1,10 @@
+rootProject.name = 'quantrpc'
+include 'common'
+include 'server'
+include 'client'
+
+project(':common').projectDir = "$rootDir/common" as File
+
+project(':server').projectDir = "$rootDir/server" as File
+
+project(':client').projectDir = "$rootDir/client" as File

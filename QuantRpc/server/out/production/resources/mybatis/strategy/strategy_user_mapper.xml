@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyUser">
+	<resultMap type="StrategyUser" id="StrategyUserResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="buyTime" column="buy_time" />
+		<result property="expireTime" column="expire_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="createTime" column="create_time" />
+		<result property="num" column="num" />
+	</resultMap>
+
+	<insert id="insert" parameterType="StrategyUser">
+		INSERT INTO strategy_user
+		(user_id,strategy_id,buy_time,expire_time,update_time,create_time)
+		VALUES
+		(#{userId},#{strategyId},#{buyTime},#{expireTime},#{updateTime},#{createTime})
+	</insert>
+
+	<update id="expandExpireTime" parameterType="map">
+		UPDATE strategy_user
+		SET
+		expire_time = DATE_ADD(expire_time,INTERVAL #{days} DAY),
+		update_time = now()
+		where
+		user_id = #{userId} and strategy_id=#{strategyId}
+	</update>
+
+	<select id="select" parameterType="int" resultMap="StrategyUserResultMap">
+		select id,user_id,strategy_id,buy_time,expire_time,update_time,create_time FROM strategy_user where id=#{id}
+	</select>
+
+	<select id="findStrategyByUserId" parameterType="map" resultMap="StrategyUserResultMap">
+		select id,user_id,strategy_id,buy_time,expire_time,update_time,create_time FROM strategy_user
+		where
+		user_id=#{userId}
+		<if test="expire == 1">
+			AND expire_time &gt; now()
+		</if>
+	</select>
+
+	<select id="getStrategyByUidSid" parameterType="map" resultMap="StrategyUserResultMap">
+		select id,user_id,strategy_id,buy_time,expire_time,update_time,create_time FROM strategy_user
+		where
+		user_id=#{userId} AND strategy_id = #{strategyId} AND expire_time &gt; now()
+	</select>
+
+	<select id="getStrategyByUidSidAll" parameterType="map" resultMap="StrategyUserResultMap">
+		select id,user_id,strategy_id,buy_time,expire_time,update_time,create_time FROM strategy_user
+		where
+		user_id=#{userId} AND strategy_id = #{strategyId}
+	</select>
+
+	<delete id="delete">
+		DELETE FROM strategy_user where id=#{id}
+	</delete>
+
+	<sql id="sql_show">
+		select id,user_id,strategy_id,buy_time,expire_time,update_time,create_time
+	</sql>
+
+	<sql id="sql_where">
+		from strategy_user
+		<trim prefix="where" prefixOverrides="AND|OR">
+			<if test=" userId != null and userId != 0 ">
+				user_id = #{userId}
+			</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_count">
+		select count(1)
+	</sql>
+
+	<sql id="sql_order">
+		<if test="cols!=null">
+			ORDER BY ${cols}
+		</if>
+	</sql>
+
+	<select id="queryStrategyUserByPage_count" parameterType="map" resultType="int">
+		<include refid="sql_count" />
+		<include refid="sql_where" />
+	</select>
+
+	<select id="queryStrategyUserByPage" parameterType="map" resultMap="StrategyUserResultMap">
+		<include refid="sql_show"/>
+		<include refid="sql_where"/>
+		<include refid="sql_order"/>
+	</select>
+
+	<select id="findByUserIdAndStrategyId" parameterType="map" resultMap="StrategyUserResultMap">
+		select id,user_id,strategy_id,buy_time,expire_time,update_time,create_time FROM strategy_user
+		where
+		strategy_id = #{strategyId}
+		AND expire_time &gt; now()
+		AND user_id IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="findStrategyBuyUserCount" parameterType="String" resultMap="StrategyUserResultMap">
+		select strategy_id,count(user_id) as num from strategy_user where expire_time > #{time} group by strategy_id;
+	</select>
+
+	<select id="findStrategyBuyUserAllCount" parameterType="String" resultMap="StrategyUserResultMap">
+		select user_id from strategy_user where expire_time > #{time}  group by user_id
+	</select>
+
+	<select id="findStrategyBuyUserList" parameterType="String" resultMap="StrategyUserResultMap">
+		select user_id,strategy_id from strategy_user where expire_time > #{time};
+	</select>
+
+</mapper>

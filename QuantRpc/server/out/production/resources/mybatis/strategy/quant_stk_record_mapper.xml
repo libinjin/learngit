@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QuantStkRecord">
+
+    <insert id="insert" parameterType="QuantStkRecord">
+		INSERT INTO quant_stk_record
+		(rid,sid,stock_code,stock_name,end_date,declare_date,
+		div_type,div_info,cash_bt,cash_at,bonus_shr,
+		cap_shr,placing_price,placing_ratio,reg_date,
+		exdiv_date,bs_tra_date,cs_tra_date)
+		VALUES
+		(#{rid},#{sid},#{stockCode},#{stockName},#{endDate},#{declareDate},#{divType},#{divInfo},#{cashBt},#{cashAt},
+		#{bonusShr},#{capShr},#{placingPrice},#{placingRatio},#{regDate},#{exdivDate},#{bsTraDate},#{csTraDate})
+	</insert>
+
+    <select id="ifExists" parameterType="map" resultType="int">
+      SELECT count(1) FROM quant_stk_record WHERE rid = #{rid} AND sid = #{sid}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserLoop">
+	<resultMap type="UserLoop" id="UserLoopResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="loopDate" column="loop_date" />
+		<result property="loopNum" column="loop_num" />
+		<result property="finishNum" column="finish_num" />
+		<result property="shareNum" column="share_num" />
+		<result property="type" column="type" />
+		<result property="updateTime" column="update_time" />
+		<result property="createTime" column="create_time" />
+
+	</resultMap>
+
+	<insert id="insert" parameterType="UserLoop">
+		INSERT INTO user_loop
+		(user_id,loop_num,finish_num,share_num,type,update_time,create_time)
+		VALUES
+		(#{userId},#{loopNum},#{finishNum},#{shareNum},#{type},#{updateTime},#{createTime})
+	</insert>
+
+	<update id="incrLoopNum" parameterType="map">
+		UPDATE user_loop
+		SET
+		loop_num = loop_num + #{loopNum},
+		share_num = share_num + 1,
+		update_time = #{updateTime}
+		where
+		user_id = #{userId} and type = #{type}
+	</update>
+
+	<update id="incrFinishNum" parameterType="map">
+		UPDATE user_loop
+		SET
+		finish_num = finish_num + 1,update_time = #{updateTime}
+		where
+		user_id = #{userId} and type = #{type}
+	</update>
+
+	<select id="selectbyType" parameterType="map" resultMap="UserLoopResultMap">
+		SELECT id,user_id,loop_num,finish_num,share_num,update_time,create_time from user_loop
+		where
+		user_id = #{userId} and type = #{type}
+	</select>
+
+	<delete id="deleteAll">
+		DELETE FROM user_loop
+	</delete>
+
+
+</mapper>

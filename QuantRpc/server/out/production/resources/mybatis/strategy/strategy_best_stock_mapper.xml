@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyBestStock">
+	<resultMap type="StrategyBestStock" id="StrategyBestStockResultMap">
+		<result property="strategyId" column="strategy_id" />
+		<result property="stockCode" column="stock_code" />
+		<result property="stockName" column="stock_name" />
+		<result property="findTime" column="find_time" />
+		<result property="profit" column="profit" />
+		<result property="rank" column="rank" />
+		<result property="updateTime" column="update_time" />
+		<result property="buyPrice" column="buy_price" />
+		<result property="lastDirect" column="last_direct" />
+	</resultMap>
+
+	<insert id="insertList">
+		insert into strategy_best_stock
+		(strategy_id,stock_code,stock_name,find_time,profit,rank,update_time,buy_price,last_direct)
+		VALUES
+		<foreach collection="list"  item="temp" separator=",">
+			(#{temp.strategyId},#{temp.stockCode},#{temp.stockName},#{temp.findTime},#{temp.profit},#{temp.rank},#{temp.updateTime},#{temp.buyPrice},#{temp.lastDirect})
+		</foreach>
+	</insert>
+
+	<select id="queryAll" resultMap="StrategyBestStockResultMap">
+		select strategy_id,stock_code,stock_name,find_time,profit,rank,update_time,buy_price,last_direct from strategy_best_stock order by rank desc
+	</select>
+
+	<delete id="clear" parameterType="int">
+		delete from strategy_best_stock where strategy_id=#{strategyId};
+	</delete>
+
+	<select id="queryStrategyBestStockList" parameterType="map" resultMap="StrategyBestStockResultMap">
+		select strategy_id,stock_code,stock_name,find_time,profit,rank,update_time,buy_price,last_direct
+		from strategy_best_stock
+		<trim prefix="where" prefixOverrides="AND|OR">
+			<if test="strategyId != null and strategyId != 0">
+				AND strategy_id = #{strategyId}
+			</if>
+		</trim>
+
+		order by rank desc limit #{limit}
+	</select>
+
+
+
+	<update id="batchUpdate"  parameterType="java.util.List">
+
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update strategy_best_stock
+			<set>
+				rank=${item.rank},update_time=now(),profit=#{item.profit}
+			</set>
+			where strategy_id = ${item.strategyId} and stock_code = ${item.stockCode}
+		</foreach>
+
+	</update>
+
+	<select id="queryStrategyBestStockListBySid" parameterType="map" resultMap="StrategyBestStockResultMap">
+		select strategy_id,stock_code,stock_name,find_time,profit,rank,update_time from strategy_best_stock where strategy_id = #{strategyId}  order by rank desc limit #{limit}
+	</select>
+
+</mapper>

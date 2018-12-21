@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Strategy">
+    <resultMap type="Strategy" id="StrategyResultMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="logo" column="logo"/>
+        <result property="description" column="description"/>
+        <result property="type" column="type"/>
+        <result property="rank" column="rank"/>
+        <result property="ratingLabel" column="rating_label"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="displayStatus" column="display_status"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+        <result property="className" column="class_name"/>
+        <result property="runStatus" column="run_status"/>
+        <result property="upLineTime" column="up_line_time"/>
+        <result property="imgLabel" column="img_label"/>
+        <result property="forwardNewHome" column="forward_new_home"/>
+        <result property="banner" column="banner"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Strategy">
+        insert into strategy
+        (name,logo,description,type,rank,rating_label,category_id,display_status,update_time,create_time,remark,class_name,run_status,up_line_time,img_label,forward_new_home,banner)
+        VALUES
+        (#{name},#{logo},#{description},#{type},#{rank},#{ratingLabel},#{categoryId},#{displayStatus},#{updateTime},#{createTime},#{remark},#{className},#{runStatus},#{upLineTime},#{imgLabel},#{forwardNewHome},#{banner})
+        <selectKey resultType="int" keyProperty="id">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <delete id="delete" parameterType="int">
+		delete from strategy where id=#{id}
+	</delete>
+
+    <update id="update" parameterType="Strategy">
+		update strategy
+		set
+		name=#{name},
+		logo=#{logo},
+		description=#{description},
+		type=#{type},
+		rank=#{rank},
+		rating_label=#{ratingLabel},
+		category_id=#{categoryId},
+		update_time=#{updateTime},
+		display_status=#{displayStatus},
+		remark=#{remark},
+		class_name=#{className},
+		run_status=#{runStatus},
+		up_line_time=#{upLineTime},
+		img_label=#{imgLabel},
+		forward_new_home=#{forwardNewHome},
+		banner=#{banner}
+		where id=#{id}
+	</update>
+
+    <update id="updateStrategyStatus" parameterType="map">
+		update strategy set run_status=#{status} where id=#{id}
+	</update>
+
+    <select id="select" parameterType="int" resultMap="StrategyResultMap">
+		select id,name,logo,description,type,rank,rating_label,category_id,display_status,
+		update_time,create_time,remark,class_name,run_status,up_line_time,img_label,forward_new_home,banner
+		from strategy
+		where id=#{id}
+	</select>
+
+    <select id="findAllRunStrategyId" resultType="int">
+      SELECT id from strategy
+    </select>
+
+    <select id="findAll" resultMap="StrategyResultMap">
+		select id,name,logo,description,type,rank,rating_label,category_id,display_status,update_time,create_time,remark,class_name,run_status,up_line_time,img_label,forward_new_home,banner
+		from strategy
+		where display_status = 1 order by rank asc
+	</select>
+
+    <select id="findStrategyByCategoryId" resultMap="StrategyResultMap" parameterType="string">
+		select id,name,logo,description,type,rank,rating_label,category_id,display_status,update_time,create_time,remark,class_name,run_status,up_line_time,img_label,forward_new_home,banner
+		from strategy
+		where display_status = 1 and category_id = #{categoryId}
+	</select>
+
+    <sql id="sql_show">
+		select id,name,logo,description,type,rank,rating_label,category_id,display_status,update_time,create_time,remark,class_name,run_status,up_line_time,img_label,forward_new_home,banner
+	</sql>
+
+    <sql id="sql_where">
+        from strategy
+        <trim prefix="where" prefixOverrides="AND|OR">
+            <if test=" id != null and id != 0 ">
+                AND id = #{id}
+            </if>
+            <if test=" type != null and type != -1 ">
+                AND type = #{type}
+            </if>
+            <if test=" displayStatus != null and  displayStatus != -1 ">
+                AND display_status = #{displayStatus}
+            </if>
+            <if test=" runStatus != null and  runStatus != -1 ">
+                AND run_status = #{runStatus}
+            </if>
+            <if test="startTime !=null and  startTime != '' ">
+                AND create_time &gt; #{startTime}
+            </if>
+            <if test="endTime !=null and  endTime != '' ">
+                AND create_time &lt; #{endTime}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sql_count">
+		select count(1)
+	</sql>
+
+    <sql id="sql_order">
+        <if test="cols!=null">
+            ORDER BY ${cols}
+        </if>
+    </sql>
+
+    <select id="queryStrategyByPage_count" parameterType="map" resultType="int">
+        <include refid="sql_count"/>
+        <include refid="sql_where"/>
+    </select>
+
+    <select id="queryStrategyByPage" parameterType="map" resultMap="StrategyResultMap">
+        <include refid="sql_show"/>
+        <include refid="sql_where"/>
+        <include refid="sql_order"/>
+    </select>
+
+</mapper>

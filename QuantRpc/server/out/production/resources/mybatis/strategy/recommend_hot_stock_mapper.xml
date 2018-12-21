@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RecommendHotStock">
+    <resultMap type="RecommendHotStock" id="RecommendHotStockResultMap">
+        <result property="id" column="id"/>
+        <result property="strategyId" column="strategy_id"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="RecommendHotStock">
+		INSERT INTO recommend_hot_stock
+		(strategy_id,stock_code,type,create_time)
+		VALUES
+		(#{strategyId},#{stockCode},#{type},#{createTime})
+	</insert>
+    <insert id="batchInsert" parameterType="list">
+        INSERT INTO recommend_hot_stock
+        (strategy_id,stock_code,type,create_time)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.strategyId},#{item.stockCode},#{item.type},#{item.createTime})
+        </foreach>
+    </insert>
+
+    <select id="getRecommendHotStockList" parameterType="Map" resultMap="RecommendHotStockResultMap">
+        SELECT id,strategy_id,stock_code,type,create_time FROM recommend_hot_stock
+        <trim prefix="where" prefixOverrides="AND|OR">
+            <if test="type != 0">
+                AND type = #{type}
+            </if>
+            <if test="strategyId != 0 ">
+                AND strategy_id = #{strategyId}
+            </if>
+        </trim>
+    </select>
+    <delete id="delete" parameterType="int">
+		delete from recommend_hot_stock where strategy_id = #{strategyId}
+	</delete>
+
+    <delete id="delRecommendHotStockByType" parameterType="Map">
+		delete from recommend_hot_stock
+        <trim prefix="where" prefixOverrides="AND|OR">
+            <if test="type > 0">
+                AND type = #{type}
+            </if>
+            <if test="strategyId > 0 ">
+                AND strategy_id = #{strategyId}
+            </if>
+        </trim>
+	</delete>
+</mapper>

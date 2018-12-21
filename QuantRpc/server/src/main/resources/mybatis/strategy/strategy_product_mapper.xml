@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyProduct">
+	<resultMap type="StrategyProduct" id="StrategyProductResultMap">
+		<result property="id" column="id" />
+		<result property="productId" column="product_id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+
+	<insert id="insert" parameterType="StrategyProduct">
+		INSERT INTO strategy_product
+		(product_id,strategy_id,create_time)
+		VALUES
+		(#{productId},#{strategyId},#{createTime})
+	</insert>
+
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyStockOneProfit">
+    <resultMap type="StrategyStockOneProfit" id="StrategyStockOneProfitResultMap">
+        <result property="id" column="id"/>
+        <result property="strategyId" column="strategy_id"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="profit" column="profit"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <insert id="batchInsertStrategyStockOneProfit" useGeneratedKeys="true" parameterType="java.util.List">
+        insert into strategy_stock_one_profit (strategy_id,stock_code,profit,create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.strategyId},#{item.stockCode},#{item.profit},#{item.createTime})
+        </foreach>
+    </insert>
+
+    <delete id="truncateStrategyStockOneProfit">
+		delete from  strategy_stock_one_profit where strategy_id=#{strategyId};
+	</delete>
+
+    <select id="queryStrategyStockOneProfit" parameterType="Map" resultMap="StrategyStockOneProfitResultMap">
+		SELECT id,strategy_id,stock_code,profit,create_time from strategy_stock_one_profit
+		where strategy_id = #{strategyId} and stock_code in (${stocks})
+	</select>
+
+
+    <select id="findStrategyStockOneProfit" parameterType="Map" resultMap="StrategyStockOneProfitResultMap">
+		SELECT id,strategy_id,stock_code,profit,create_time from strategy_stock_one_profit
+		where strategy_id = #{strategyId} and stock_code = #{stockCode}
+	</select>
+
+    <select id="queryStrategyStockOneProfitList" parameterType="Map" resultMap="StrategyStockOneProfitResultMap">
+        SELECT id,strategy_id,stock_code,profit,create_time from strategy_stock_one_profit
+        where stock_code = #{stockCode} and strategy_id IN
+        <foreach item="item" index="index" collection="strategyIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findStrategyStockOneProfitByStrategyId" parameterType="int" resultMap="StrategyStockOneProfitResultMap">
+        SELECT id,strategy_id,stock_code,profit,create_time from strategy_stock_one_profit
+        where strategy_id = #{strategyId}
+    </select>
+
+    <select id="queryStrategyStockOneProfitListByStrategyId" parameterType="Map" resultMap="StrategyStockOneProfitResultMap">
+        SELECT id,strategy_id,stock_code,profit,create_time from strategy_stock_one_profit
+        where stock_code ='99999999' and strategy_id IN
+        <foreach item="item" index="index" collection="strategyIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

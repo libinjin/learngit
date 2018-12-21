@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StockTradeNear5days">
+	<resultMap type="StockTradeNear5days" id="StockTradeNear5daysResultMap">
+		<result property="id" column="id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="stockCode" column="stock_code" />
+		<result property="stockName" column="stock_name" />
+		<result property="tradeTime" column="trade_time" />
+		<result property="price" column="price" />
+		<result property="profit" column="profit" />
+		<result property="rank" column="rank" />
+		<result property="createTime" column="create_time" />
+
+	</resultMap>
+
+	<insert id="insertList">
+		INSERT INTO stock_trade_near5days
+		(strategy_id,stock_code,stock_name,trade_time,price,profit,rank,create_time)
+		VALUES
+		<foreach collection="list"  item="temp" separator=",">
+			(#{temp.strategyId},#{temp.stockCode},#{temp.stockName},#{temp.tradeTime},#{temp.price},#{temp.profit},#{temp.rank},#{temp.createTime})
+		</foreach>
+
+	</insert>
+
+
+
+	<select id="selectByRank" parameterType="map" resultMap="StockTradeNear5daysResultMap">
+		SELECT id,strategy_id,stock_code,stock_name,trade_time,price,profit,rank,create_time
+		from stock_trade_near5days
+		where
+		strategy_id = #{strategyId} and rank &lt; #{rank} order by rank desc limit #{limit}
+	</select>
+
+	<delete id="deleteByStrategyId" parameterType="int" >
+		DELETE FROM stock_trade_near5days where strategy_id = #{strategyId}
+	</delete>
+
+
+</mapper>

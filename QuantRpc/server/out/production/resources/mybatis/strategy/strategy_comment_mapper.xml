@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyComment">
+	<resultMap type="StrategyComment" id="StrategyCommentResultMap">
+		<result property="id" column="id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="userId" column="user_id" />
+		<result property="cotent" column="cotent" />
+		<result property="createTime" column="create_time" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<insert id="insert" parameterType="StrategyComment">
+		insert into strategy_comment
+		(strategy_id,user_id,cotent,create_time,status)
+		VALUES
+		(#{strategyId},#{userId},#{cotent},#{createTime},#{status})
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		delete from strategy_comment where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="StrategyComment">
+		update strategy_comment
+		set
+		strategy_id=#{strategyId},
+		user_id=#{userId},
+		cotent=#{cotent},
+		status=#{status}
+		where id=#{id}
+	</update>
+
+	<update id="updateCommentStatus" parameterType="map">
+		update strategy_comment
+		set
+		status=#{status}
+		where id=#{id}
+	</update>
+
+	<select id="select" parameterType="int" resultMap="StrategyCommentResultMap">
+		select id,strategy_id,user_id,cotent,create_time,status
+		from strategy_comment
+		where id=#{id}
+	</select>
+
+	<select id="findStrategyCommentList" parameterType="map" resultMap="StrategyCommentResultMap">
+		select id,strategy_id,user_id,cotent,create_time,status
+		from strategy_comment
+		<if test="strategyId != 0">
+			where strategy_id = #{strategyId}
+		</if>
+		limit #{pageIndex},#{pageSize}
+	</select>
+
+	<sql id="sql_show">
+		select id,strategy_id,user_id,cotent,create_time,status
+	</sql>
+
+	<sql id="sql_where">
+		from strategy_comment
+		<trim prefix="where" prefixOverrides="AND|OR">
+			<if test=" strategyId != null and strategyId != 0 ">
+				strategy_id = #{strategyId}
+			</if>
+			<if test=" userId != null and userId != 0 ">
+				AND userId = #{user_id}
+			</if>
+		</trim>
+	</sql>
+
+	<sql id="sql_count">
+		select count(1)
+	</sql>
+
+	<sql id="sql_order">
+		<if test="cols!=null">
+			ORDER BY ${cols}
+		</if>
+	</sql>
+
+	<select id="queryStrategyCommentByPage_count" parameterType="map" resultType="int">
+		<include refid="sql_count" />
+		<include refid="sql_where" />
+	</select>
+
+	<select id="queryStrategyCommentByPage" parameterType="map" resultMap="StrategyCommentResultMap">
+		<include refid="sql_show"/>
+		<include refid="sql_where"/>
+		<include refid="sql_order"/>
+	</select>
+
+
+</mapper>

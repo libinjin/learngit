@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyUserStock">
+	<resultMap type="StrategyUserStock" id="StrategyUserStockResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="stockCode" column="stock_code" />
+		<result property="marketId" column="market_id" />
+		<result property="updateTime" column="update_time" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+
+	<insert id="insertList">
+		insert into strategy_user_stock
+		(user_id,strategy_id,stock_code,market_id,update_time,create_time)
+		VALUES
+		<foreach collection="list"  item="temp" separator=",">
+			(#{temp.userId},#{temp.strategyId},#{temp.stockCode},#{temp.marketId},#{temp.updateTime},#{temp.createTime})
+		</foreach>
+	</insert>
+
+	<delete id="deleteStocks" parameterType="map">
+		DELETE FROM strategy_user_stock
+		WHERE
+		user_id = #{userId} AND strategy_id = #{strategyId} AND stock_code IN
+		<foreach collection="codeList" item="codes" index="index" open="(" close=")" separator=",">
+			#{codes}
+		</foreach>
+	</delete>
+
+	<select id="findStockByStrategyAndUser" resultMap="StrategyUserStockResultMap" parameterType="map">
+		SELECT id,user_id,strategy_id,stock_code,market_id,update_time,create_time FROM strategy_user_stock
+		WHERE
+		user_id = #{userId} AND strategy_id = #{strategyId}
+	</select>
+
+	<select id="findStockCodeList" resultType="String" parameterType="Map">
+		SELECT stock_code FROM strategy_user_stock WHERE user_id = #{userId} AND strategy_id = #{strategyId}
+	</select>
+
+	<select id="findStockByStrategyAndStock" resultMap="StrategyUserStockResultMap" parameterType="map">
+		SELECT id,user_id,strategy_id,stock_code,market_id,update_time,create_time FROM strategy_user_stock
+		WHERE
+		stock_code = #{stockCode} AND strategy_id = #{strategyId}
+	</select>
+
+	<select id="findAllValidRelation" resultMap="StrategyUserStockResultMap">
+		SELECT a.user_id,a.strategy_id,a.stock_code FROM strategy_user_stock a LEFT JOIN strategy_user b ON a.strategy_id=b.strategy_id
+		AND a.user_id=b.user_id
+		WHERE b.expire_time>NOW()
+	</select>
+
+	<insert id="insert" parameterType="StrategyUserStock">
+		insert into strategy_user_stock
+		(user_id,strategy_id,stock_code,market_id,update_time,create_time)
+		VALUES (#{userId},#{strategyId},#{stockCode},#{marketId},#{updateTime},#{createTime})
+	</insert>
+
+	<delete id="deleteUserStock" parameterType="Map">
+		DELETE FROM strategy_user_stock WHERE user_id=#{userId} AND strategy_id=#{strategyId} AND stock_code=#{stockCode}
+	</delete>
+
+	<select id="countFollowNum" parameterType="Map" resultType="int">
+		SELECT count(1) FROM strategy_user_stock WHERE user_id=#{userId} AND strategy_id=#{strategyId}
+	</select>
+
+	<select id="findStrategyUserStock" resultMap="StrategyUserStockResultMap" parameterType="map">
+		SELECT id,user_id,strategy_id,stock_code,market_id,update_time,create_time FROM strategy_user_stock
+		WHERE user_id = #{userId} AND strategy_id = #{strategyId} AND stock_code=#{stockCode}
+	</select>
+
+	<select id="findUserFollowStock" resultType="String" parameterType="map">
+		SELECT stock_code FROM strategy_user_stock
+		WHERE
+		user_id = #{userId} AND strategy_id = #{strategyId}
+	</select>
+
+</mapper>

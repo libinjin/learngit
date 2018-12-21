@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StockTradeToday">
+	<resultMap type="StockTradeToday" id="StockTradeTodayResultMap">
+		<result property="id" column="id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="type" column="type" />
+		<result property="stockCode" column="stock_code" />
+		<result property="stockName" column="stock_name" />
+		<result property="tradeTime" column="trade_time" />
+		<result property="price" column="price" />
+		<result property="profit" column="profit" />
+		<result property="rank" column="rank" />
+		<result property="createTime" column="create_time" />
+
+	</resultMap>
+
+	<insert id="insert" parameterType="StockTradeToday">
+		INSERT INTO stock_trade_today
+		(id,strategy_id,type,stock_code,stock_name,trade_time,price,profit,rank,create_time)
+		VALUES
+		(#{id},#{strategyId},#{type},#{stockCode},#{stockName},
+		#{tradeTime},#{price},#{profit},#{rank},#{createTime})
+	</insert>
+
+	<update id="batchUpdate"  parameterType="java.util.List">
+
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update stock_trade_today
+			<set>
+				rank=${item.rank},profit=#{item.profit},create_time=now()
+			</set>
+			where id = ${item.id}
+		</foreach>
+
+	</update>
+
+	<select id="selectByRank" parameterType="map" resultMap="StockTradeTodayResultMap">
+		SELECT id,strategy_id,type,stock_code,stock_name,trade_time,price,profit,rank,create_time
+		from stock_trade_today
+		where
+		strategy_id = #{strategyId} and type=#{type} and rank &lt; #{rank} order by rank desc limit #{limit}
+	</select>
+
+	<delete id="deleteByStrategyId" parameterType="int" >
+		DELETE FROM stock_trade_today where strategy_id = #{strategyId}
+	</delete>
+
+
+</mapper>

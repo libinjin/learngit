@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyStockBlacklist">
+	<resultMap type="StrategyStockBlacklist" id="StrategyStockBlacklistResultMap">
+		<result property="id" column="id" />
+		<result property="strategyId" column="strategy_id" />
+		<result property="stockCodes" column="stock_codes" />
+		<result property="version" column="version" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<insert id="insert" parameterType="StrategyStockBlacklist">
+		INSERT INTO strategy_stock_blacklist
+		(strategy_id,stock_codes,version,update_time)
+		VALUES
+		(#{strategyId},#{stockCodes},#{version},#{updateTime})
+	</insert>
+
+	<select id="getStrategyStockBlacklist" parameterType="map" resultMap="StrategyStockBlacklistResultMap">
+		SELECT id,strategy_id,stock_codes,version,update_time FROM strategy_stock_blacklist
+		<if test="strategyId != null and strategyId != 0">
+			where strategy_id = #{strategyId}
+		</if>
+	</select>
+
+	<update id="updateData" parameterType="map">
+		UPDATE strategy_stock_blacklist
+		SET
+		stock_codes = #{stockCodes},
+		version = version + 1,
+		update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

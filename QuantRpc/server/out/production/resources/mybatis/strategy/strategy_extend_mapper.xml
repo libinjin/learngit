@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyExtend">
+	<resultMap type="StrategyExtend" id="StrategyExtendResultMap">
+		<result property="strategyId" column="strategy_id" />
+		<result property="buyNum" column="buy_num" />
+		<result property="sellNum" column="sell_num" />
+		<result property="positionNum" column="position_num" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<insert id="insert">
+		INSERT INTO strategy_extend
+		(strategy_id,buy_num,sell_num,position_num,update_time)
+		VALUES
+		(#{strategyId},#{buyNum},#{sellNum},#{positionNum},#{updateTime})
+
+	</insert>
+
+
+
+	<select id="select" parameterType="int" resultMap="StrategyExtendResultMap">
+		SELECT strategy_id,buy_num,sell_num,position_num,update_time
+		from strategy_extend
+		where
+		strategy_id = #{strategyId}
+	</select>
+
+	<update id="incBuy" parameterType="int">
+		update strategy_extend set buy_num = buy_num + 1 , position_num = position_num + 1
+		,update_time=now()
+		where strategy_id = #{strategyId}
+	</update>
+
+	<update id="incSell" parameterType="int">
+		update strategy_extend set sell_num = sell_num + 1 , position_num = position_num - 1
+		,update_time=now()
+		where strategy_id = #{strategyId}
+	</update>
+
+	<update id="updatePositionNum" parameterType="map">
+		update strategy_extend set
+		position_num = #{positionNum}
+		,update_time=now()
+
+		,buy_num = 0
+
+
+		,sell_num = 0
+
+		where strategy_id = #{strategyId}
+	</update>
+
+
+</mapper>

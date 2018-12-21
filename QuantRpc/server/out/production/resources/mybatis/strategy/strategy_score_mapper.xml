@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StrategyScore">
+	<resultMap type="StrategyScore" id="StrategyScoreResultMap">
+		<result property="strategyId" column="strategy_id" />
+		<result property="successNum" column="success_num" />
+		<result property="averageProfit" column="average_profit" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<insert id="insert" parameterType="StrategyScore">
+		INSERT INTO strategy_score
+		(strategy_id,success_num,average_profit,update_time)
+		VALUES
+		(#{strategyId},#{successNum},#{averageProfit},#{updateTime})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM strategy_score where strategy_id =#{strategyId}
+	</delete>
+
+	<select id="getStrategyScore" resultMap="StrategyScoreResultMap" parameterType="int">
+		SELECT strategy_id,success_num,average_profit,update_time FROM strategy_score
+			where strategy_id = #{strategyId}
+	</select>
+
+</mapper>
