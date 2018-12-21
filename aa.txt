@@ -1,8 +1,10 @@
-ddddddddddddddddddddddddddddddddddddddddddddddddddddddddiaaa
+statgeSecondTdfsdfsdf
+rid
+dfsdfaa
 secondAdd
  home：http://192.168.1.62/doc/java_wiki/wikis/home
 sdfsdfsdfsdfasdfsdfaaaaaaaa
-s
+sdfsdfsdfs
  
 daaasdfsdfsdfsdfsdffffffffffffffffffffffffff:wq
   代码下载地址5个： http://192.168.1.62/search?utf8=%E2%9C%93&search=adviser_ai&group_id=&project_id=&repository_ref=
@@ -25,6 +27,7 @@ http://192.168.1.30:3001/   zookeeper客户端
 
 http://192.168.1.62/trade/tradeweb
   
+
 http://192.168.1.26:8080/jenkins/  #jenkins的地址
 ——————————————————————————————
 192.168.1.28   root
