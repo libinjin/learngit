@@ -1,0 +1,94 @@
+
+ home：http://192.168.1.62/doc/java_wiki/wikis/home
+
+ 
+daaasdfsdfsdfsdfsdffffffffffffffffffffffffff:wq
+  代码下载地址5个： http://192.168.1.62/search?utf8=%E2%9C%93&search=adviser_ai&group_id=&project_id=&repository_ref=
+
+ 后台管理地址： http://192.168.1.85:6081/gamems/manager/layout/index.jsp 用户名/密码 sysadmin/jhss#2015
+
+ 核心包：http://192.168.1.62/core/jhss_core/tree/master
+ service层地址：http://192.168.1.62/core/asteroid_service/tree/master   小行星
+http://192.168.1.30:3001/   zookeeper客户端
+
+  MySQL： 192.168.1.24  ，  192.168.1.29
+
+  测试系统地址： 192.168.1.99    root/111111
+
+ mongo地址：192.168.1.20 用户名：root/jh#6vod3
+ mongo启动： /usr/bin/mongod -f /etc/mongod.conf
+  
+  zookeeper用户名/密码  admin/admin
+
+
+http://192.168.1.62/trade/tradeweb
+  
+http://192.168.1.26:8080/jenkins/  #jenkins的地址
+——————————————————————————————
+192.168.1.28   root
+trade_web服务器地址
+在jekins中trade_rpc_new    ----》trade_web_test  --》featweb_1.0.1_libin
+/opt/tomcat/tomcat_trade
+日志地址：
+tail -f /data/logs/trade_web/
+
+
+trade_service服务器地址
+在jekins中trade_rpc_new  ---》trade_rpc_new --》feature_libin_1.0.1
+/opt/trade-rpc-server/
+日志地址：
+tail -f /data/logs/trade/rpc/log.log
+
+
+quote_rpc项目：
+在jekins上的hq_rpc_new_test  ---》feature_qutolibin_1.0.1
+日志：/data/logs/hqrpc/log.log
+
+
+
+
+doc文档编写地址
+http://192.168.1.62/doc/pub_wiki/wikis/trade_web_api
+//行情的项目地址
+http://192.168.1.62/quote/quote_rpc
+
+
+
+
+
+ /opt/rpc/hq_rpc_server_new/gc.log
+
+
+
+
+
+
+
+
+
+
+192.168.1.13 mongo_licai
+192.168.1.20 mongo_istock
+192.168.1.27 redis_user
+192.168.1.61 mq
+192.168.1.27 redis_hq
+192.168.1.27 redis_cms
+192.168.1.27 redis_trade
+192.168.1.29 mysql_trade
+192.168.1.24 mysql_user
+192.168.1.24 mysql_oper
+192.168.1.24 mysql_hq
+
+
+http://192.168.1.62/doc/java_wiki/wikis/innerDOC
+
+
+
+
+
+D:\\jar\\quantstrategyplate\\out\\production\\classes\\com\\youguu\\strategy\\pojo
+
+
+
+
+ 
